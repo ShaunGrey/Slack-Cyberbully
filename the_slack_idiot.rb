@@ -47,7 +47,7 @@ channels_hash.merge!(ims_hash)
 client.on :hello do
   File.open('the_slack_idiot_output.txt', 'a') { |file|
     file.write("-------------------------------------------\n")
-    file.write("Successfully logged in at #{Time.now.strftime("%_I:%M:%S %p")}\n")
+    file.write("Successfully logged in at #{Time.now.strftime('%_I:%M:%S %p')}\n")
   }
 end
 
