@@ -1,5 +1,6 @@
 require 'slack-ruby-client'
 require 'date'
+require_relative 'api_key_module'
 
 CHANNEL_RANDOM        = 'C7KNA5LDR'
 
@@ -8,8 +9,7 @@ USER_SEAN             = 'U7LUMFQE6'
 USER_SLACKBOT         = 'USLACKBOT'
 USER_THE_SLACK_IDIOT  = 'U7XCU6WRE'
 
-TOKEN_SEAN            = ''
-TOKEN_THE_SLACK_IDIOT = ''
+TOKEN_SEAN            = APIKeys::KEYS[:SEAN]
 
 Slack.configure do |config|
   config.token = TOKEN_SEAN
@@ -46,7 +46,8 @@ channels_hash.merge!(ims_hash)
 
 client.on :hello do
   File.open('the_slack_idiot_output.txt', 'a') { |file|
-    file.write("Ah nice, you're here\n")
+    file.write("-------------------------------------------\n")
+    file.write("Successfully logged in at #{Time.now.strftime("%_I:%M:%S %p")}\n")
   }
 end
 
