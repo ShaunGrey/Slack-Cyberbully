@@ -1,18 +1,16 @@
 require 'slack-ruby-client'
 require 'date'
-require_relative 'api_key_module'
+require_relative 'slack_facts'
 
-CHANNEL_RANDOM        = 'C7KNA5LDR'
+USER_JOSH   = 'U7LT1NL7R'
+USER_SEAN   = 'U7LUMFQE6'
 
-USER_JOSH             = 'U7LT1NL7R'
-USER_SEAN             = 'U7LUMFQE6'
-USER_SLACKBOT         = 'USLACKBOT'
-USER_THE_SLACK_IDIOT  = 'U7XCU6WRE'
+TOKEN  = SlackFacts::KEYS[:SEAN]
 
-TOKEN_SEAN            = APIKeys::KEYS[:SEAN]
+OUTPUT_FILE = 'sean_output.txt'
 
 Slack.configure do |config|
-  config.token = TOKEN_SEAN
+  config.token = TOKEN
 end
 
 client = Slack::RealTime::Client.new
@@ -45,7 +43,7 @@ channels_hash.merge!(groups_hash)
 channels_hash.merge!(ims_hash)
 
 client.on :hello do
-  File.open('the_slack_idiot_output.txt', 'a') { |file|
+  File.open(OUTPUT_FILE, 'a') { |file|
     file.write("-------------------------------------------\n")
     file.write("Successfully logged in at #{Time.now.strftime('%_I:%M:%S %p')}\n")
   }
@@ -57,7 +55,7 @@ client.on :message do |data|
   content     = data['text']
   timestamp   = timestamp = DateTime.strptime((data['ts'].to_i*1000).to_s, '%Q').new_offset('-5:00')
 
-  File.open('the_slack_idiot_output.txt', 'a') { |file|
+  File.open(OUTPUT_FILE, 'a') { |file|
     file.write("-------------------------------------------\n")
     file.write("Username: #{users_hash[user_id]}\n")
     file.write("Channel name: #{channels_hash[channel_id]}\n")
@@ -68,7 +66,7 @@ client.on :message do |data|
   case data['text']
   when /twitter.com\/jshgdmn/ then
     if data['user'] == USER_JOSH || data['user'] == USER_SEAN
-      File.open('the_slack_idiot_output.txt', 'a') { |file|
+      File.open(OUTPUT_FILE, 'a') { |file|
         file.write("josh just posted a link to his own tweet. go light him up\n")
       }
       client.typing channel: channel_id
