@@ -68,7 +68,13 @@ client.on :message do |data|
     File.open(OUTPUT_FILE, 'a') { |file|
       file.write("let these fuckers know just how cold it was\n")
     }
-   client.message channel: channel_id, text: "i was FREOZEN, TODAY!!!"
+    client.message channel: channel_id, text: "i was FREOZEN, TODAY!!!"
+
+  when /terrorism/ then
+   File.open(OUTPUT_FILE, 'a') { |file|
+    file.write("die a happy man\n")
+   }
+   client.message channel: channel_id, text: "Gentlemen, I can categorically say that today I could die as a result of a terrorist attack, and be going out on a  high note."
   end
 end
 
